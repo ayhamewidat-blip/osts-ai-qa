@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. سحب كود المشروع من المستودع
+      # 1. سحب كود المشروع
       - name: Checkout Repository
         uses: actions/checkout@v4
 
@@ -22,12 +22,20 @@ jobs:
           node-version: '20'
 
       # 3. تثبيت التبعيات وأداة promptfoo
-      - name: Install Dependencies
+      - name: Install Dependencies & Promptfoo
         run: |
           npm install -y
           npm install -g promptfoo
 
-      # 4. تشغيل تقييم وفحص قواعد البزنس والأمان للذكاء الاصطناعي
+      # 4. تثبيت وتشغيل Ollama محلياً في الـ Runner وسحب نموذج Llama 3
+      - name: Install and Start Ollama
+        run: |
+          curl -fsSL https://ollama.com/install.sh | sh
+          ollama serve &
+          sleep 5
+          ollama pull llama3
+
+      # 5. تشغيل تقييم وفحص قواعد البزنس والأمان للذكاء الاصطناعي
       - name: Run Promptfoo Evaluation
         run: |
           npx promptfoo eval -c promptfooconfig.yaml --no-cache
