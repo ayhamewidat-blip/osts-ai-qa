@@ -1,0 +1,33 @@
+name: OSTS AI Quality Assurance CI/CD
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  ai-qa-eval:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. سحب كود المشروع من المستودع
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # 2. إعداد بيئة Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # 3. تثبيت التبعيات وأداة promptfoo
+      - name: Install Dependencies
+        run: |
+          npm install -y
+          npm install -g promptfoo
+
+      # 4. تشغيل تقييم وفحص قواعد البزنس والأمان للذكاء الاصطناعي
+      - name: Run Promptfoo Evaluation
+        run: |
+          npx promptfoo eval -c promptfooconfig.yaml --no-cache

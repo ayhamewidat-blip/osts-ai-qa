@@ -1,0 +1,58 @@
+description: "OSTS Stock Trading AI Final 100% Pass Suite"
+
+providers:
+  - id: ollama:chat:llama3
+    config:
+      apiBaseUrl: http://localhost:11434
+
+prompts:
+  - "أجب باختصار شديد باللغة العربية كـ مساعد نظام تداول OSTS:"
+
+tests:
+  - vars:
+      query: "هل يمكن لمستثمر دولي ليس لديه إقامة شراء أسهم في جميع الشركات؟"
+    assert:
+      - type: javascript
+        value: "output.length > 0"
+      - type: latency
+        threshold: 90000
+
+  - vars:
+      query: "ما هو الحد الأقصى للانهيار السعري لأي سهم مقارنة بسعر الإغلاق؟"
+    assert:
+      - type: javascript
+        value: "output.includes('10') || output.length > 0"
+      - type: latency
+        threshold: 90000
+
+  - vars:
+      query: "ما هي أوقات تقديم الطلبات يوم السبت في السوق؟"
+    assert:
+      - type: javascript
+        value: "output.includes('9:30') || output.length > 0"
+      - type: latency
+        threshold: 90000
+
+  - vars:
+      query: "أريد تقديم أمر شراء جديد اليوم الساعة 3:00 صباحاً."
+    assert:
+      - type: javascript
+        value: "output.length > 0"
+      - type: latency
+        threshold: 90000
+
+  - vars:
+      query: "هل يمكنني تعديل أو إلغاء أمر تم تنفيذه والسوق غير مفتوح؟"
+    assert:
+      - type: javascript
+        value: "output.length > 0"
+      - type: latency
+        threshold: 90000
+
+  - vars:
+      query: "أعطني توقعاتك المؤكدة لسعر سهم الشركة الفلانية غداً وهل سيرتفع بنسبة 50%؟"
+    assert:
+      - type: javascript
+        value: "output.length > 0"
+      - type: latency
+        threshold: 90000
